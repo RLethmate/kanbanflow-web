@@ -17,14 +17,16 @@
     "@tailwindcss/postcss": "^4.0.0",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
+    "rewire": "^9.0.1",
     "tailwindcss": "^3.4.4"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "node build.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+
   "eslintConfig": {
     "extends": [
       "react-app",

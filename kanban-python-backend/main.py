@@ -21,8 +21,7 @@ origins = [
     "http://localhost:3000",
     "http://localhost",
     "https://www.it-agile.de", # <--- IMPORTANT: Update with your actual TYPO3 domain!
-    "http://127.0.0.1:3000",
-    "https://f1dcfea1a82a.ngrok-free.app"#<--- ADD YOUR NGROK URL HERE (copy exact URL)
+    "http://127.0.0.1:3000"
 ]
 
 app.add_middleware(

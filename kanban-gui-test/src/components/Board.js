@@ -8,9 +8,8 @@ import FlyingCardAnimation from './FlyingCardAnimation';
 
 //const API_BASE_URL = 'http://127.0.0.1:8000'; // Your FastAPI backend URL
 // IMPORTANT: Change this to the Ngrok URL copied from your Ngrok terminal in 'cd /opt/homebrew/bin/' --> ./ngrok http 8000
-const API_BASE_URL = 'https://f1dcfea1a82a.ngrok-free.app'; // <<< REPLACE WITH YOUR NGROK URL <<<
-
-
+//const API_BASE_URL = 'https://f1dcfea1a82a.ngrok-free.app'; // <<< REPLACE WITH YOUR NGROK URL <<<
+const API_BASE_URL = 'https://kanbanflow-web.onrender.com';
 
 const Board = () => {
   const [lanes, setLanes] = useState([]);
@@ -347,40 +346,40 @@ const Board = () => {
     }));
   }, []);
 
-
-  return (
+return (
     // Overall layout: flex column, centered, with padding
-     // CHANGE: Reduced overall padding from p-4 to p-2 for a tighter fit
-      <div className="flex flex-col p-2 bg-gray-50 min-h-screen items-center">
-        {/* Simulation Controls (More Compact and Styled) */}
-        {/* CHANGE: Removed mb-4 to bring it closer to the board */}
-        <div className="p-3 bg-white rounded-lg shadow-md w-full max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
-          <h3 className="text-xl font-bold text-gray-800 flex-shrink-0">Verbessere die Durchlaufzeit der roten Karte durch WiP Limits!</h3>
-        
+    <div className="flex flex-col p-2 bg-gray-50 min-h-screen items-center">
+      {/* Simulation Controls */}
+      <div className="p-3 bg-white rounded-lg shadow-md w-full max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
+        <h3 className="text-xl font-bold text-gray-800 flex-shrink-0">
+          Verbessere die Durchlaufzeit der roten Karte durch WiP Limits!
+        </h3>
+      
         {/* Global Parameters */}
-        <div className="flex items-center gap-3 flex-grow justify-center">
-            <div>
-              <label className="block text-gray-700 text-xs font-bold mb-0">Gesamt WIP Limit:</label>
+        <div className="flex items-center gap-6 flex-grow justify-center">
+            <div className="flex items-center gap-2">
+              <label className="text-gray-700 text-[10px] font-bold mb-0 leading-none">Gesamt WIP Limit:</label>
               <input
                 type="number"
                 value={wipLimit}
                 onChange={(e) => setWipLimit(parseInt(e.target.value) || 0)}
-                className="shadow appearance-none border rounded w-20 py-0.5 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-xs"
+                className="shadow appearance-none border rounded w-12 py-0.5 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-xs text-center"
                 min="0"
               />
             </div>
+
+            {/* Sim. Geschw. auskommentiert für mehr Platz
             <div>
-              <label className="block text-gray-700 text-xs font-bold mb-0">Sim. Geschw. (s/Schritt):</label> {/* Shorter label */}
+              <label className="block text-gray-700 text-xs font-bold mb-0">Sim. Geschw. (s/Schritt):</label>
               <input
                 type="number"
                 step="0.1"
                 value={simSpeed}
-                //onChange={(e) => setSimSpeed(parseFloat(e.target.value) || 0.0)}
                 className="shadow appearance-none border rounded w-20 py-0.5 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-xs"
                 min="0.1"
-                disabled // CHANGE 3: Add the disabled attribute
               />
             </div>
+            */}
         </div>
 
         {/* Action Buttons */}
@@ -388,25 +387,17 @@ const Board = () => {
           <button
             onClick={startSimulation}
             disabled={!isReady || simulationRunning}
-            className={`px-3 py-1.5 rounded-lg text-white font-bold text-sm transition-colors duration-200 ${
+            className={`!w-16 py-1.5 rounded-lg text-white font-bold text-sm transition-colors duration-200 ${
               !isReady || simulationRunning ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500 hover:bg-green-700'
             }`}
           >
             Start
           </button>
-          {/* <button
-            onClick={stopSimulation}
-            disabled={!isReady || !simulationRunning}
-            className={`px-3 py-1.5 rounded-lg text-white font-bold text-sm transition-colors duration-200 ${
-              !isReady || !simulationRunning ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-500 hover:bg-red-700'
-            }`}
-          >
-            Stopp
-          </button> */}
+
            <button
             onClick={clearDashboard}
             disabled={!isReady}
-            className={`px-3 py-1.5 rounded-lg text-white font-bold text-sm transition-colors duration-200 ${
+            className={`!w-16 py-1.5 rounded-lg text-white font-bold text-sm transition-colors duration-200 ${
               !isReady ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-500 hover:bg-yellow-700'
             }`}
           >
@@ -416,8 +407,7 @@ const Board = () => {
       </div>
 
       {/* Kanban Board Display */}
-      {/* Reduced padding, margin-right, and added fixed width for columns */}
-     <div className="flex p-2 overflow-x-auto items-start bg-gray-100 rounded-lg shadow-inner w-full max-w-5xl"> {/* REMOVED flex-grow */}
+      <div className="flex p-2 overflow-x-auto items-start bg-gray-100 rounded-lg shadow-inner w-full max-w-5xl mt-2">
         {lanes.length === 0 ? (
           <p className="text-center text-gray-500 w-full p-10">
             Keine Board-Daten verfügbar. Simulation starten.
@@ -430,23 +420,20 @@ const Board = () => {
                 if (el) laneRefs.current.set(lane.id, el);
                 else laneRefs.current.delete(lane.id);
               }}
-              // Column base styling: fixed width, flex column for header/cards stacking
               className="flex-shrink-0 mr-1 bg-gray-200 rounded-lg shadow-inner flex flex-col items-center"
               style={{ width: '122px', minHeight: '500px' }}
             >
-              {/* NEW: Column Header Section */}
-              <div className="p-1.5 bg-gray-300 rounded-t-lg text-center w-full border-b border-gray-400" style={{ minHeight: '70px' }}> {/* NEW: minHeight for consistent header height */}
+              {/* Column Header Section */}
+              <div className="p-1.5 bg-gray-300 rounded-t-lg text-center w-full border-b border-gray-400" style={{ minHeight: '70px' }}>
                 <h2 className="text-sm font-semibold text-gray-800 pb-0.5">
                   {lane.title}
                 </h2>
-                {/* Max WIP display for ALL columns */}
                 {lane.max_wip_in_round !== undefined && (
                     <span className="text-xs text-gray-600 block">Max WIP: {lane.max_wip_in_round}</span>
                 )}
-                {/* Complexity input for "Schritt A/B/C" columns (IDs 1, 3, 5) */}
                 {(lane.id === 'lane-1' || lane.id === 'lane-3' || lane.id === 'lane-5') && (
-                    <div className="mt-1 flex items-center justify-center gap-1"> {/* Inline Komplexität */}
-                        <label className="text-gray-700 text-xs font-bold">K'xität:</label> {/* Shorter label */}
+                    <div className="mt-1 flex items-center justify-center gap-1">
+                        <label className="text-gray-700 text-xs font-bold">K'xität:</label>
                         <input
                             type="number"
                             value={complexity[parseInt(lane.id.split('-')[1])] || 1}
@@ -458,8 +445,8 @@ const Board = () => {
                 )}
               </div>
 
-              {/* NEW: Card Area (underneath header) */}
-              <div className="flex flex-col items-center w-full mt-1 overflow-y-auto" style={{ maxHeight: 'calc(100% - 70px)' }}> {/* Adjust height to account for header's fixed height */}
+              {/* Card Area */}
+              <div className="flex flex-col items-center w-full mt-1 overflow-y-auto" style={{ maxHeight: 'calc(100% - 70px)' }}>
                 {lane.cards.map((card, index) => {
                   const isFlyingClone = flyingAnimations.current.some(anim => anim.card.id === card.id);
                   return (
@@ -485,10 +472,9 @@ const Board = () => {
                         justifyContent: 'center',
                         alignItems: 'center',
                         marginBottom: '4px',
-                        whiteSpace: 'nowrap',   // NEW: Prevent text from wrapping
-                        overflow: 'hidden',      // NEW: Hide text that overflows
-                        textOverflow: 'ellipsis' // NEW: Add "..." for hidden text (optional, but good UX)
-               
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
                       }}
                     />
                   );
@@ -499,8 +485,8 @@ const Board = () => {
         )}
       </div>
 
-      {/* Dashboard Table (More Compact) */}
-      <div className="p-2 bg-white rounded-lg shadow-md w-full max-w-5xl text-sm">
+      {/* Dashboard Table */}
+      <div className="p-2 bg-white rounded-lg shadow-md w-full max-w-5xl text-sm mt-4">
         <h3 className="text-xl font-bold text-gray-800 mb-2 border-b pb-1">Dashboard</h3>
         {dashboardData.length === 0 ? (
           <p className="text-gray-500 text-xs p-1">Dashboard ist leer. Simulation starten.</p>
@@ -536,7 +522,7 @@ const Board = () => {
         )}
       </div>
 
-      {/* Render flying animations on top of everything */}
+      {/* Render flying animations */}
       {flyingAnimations.current.map(anim => anim.startRect && (
         <FlyingCardAnimation
           key={anim.id}
@@ -549,5 +535,6 @@ const Board = () => {
     </div>
   );
 };
-
+  
 export default Board;
+
