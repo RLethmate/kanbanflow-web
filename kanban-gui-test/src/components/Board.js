@@ -489,7 +489,7 @@ return (
       <div className="p-2 bg-white rounded-lg shadow-md w-full max-w-5xl text-sm mt-4">
         <h3 className="text-xl font-bold text-gray-800 mb-2 border-b pb-1">Dashboard</h3>
         {dashboardData.length === 0 ? (
-          <p className="text-gray-500 text-xs p-1">Dashboard ist leer. Simulation starten.</p>
+          <p className="text-gray-500 text-xs p-1">Dashboard ist leer - Simulation starten.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -507,7 +507,9 @@ return (
               <tbody className="bg-white divide-y divide-gray-200">
                 {dashboardData.slice().reverse().map((entry, index) => (
                   <tr key={index}>
-                    <td className="px-1 py-1 whitespace-nowrap text-xs text-gray-900">{entry.round}</td>
+                    <td className="px-1 py-1 whitespace-nowrap text-xs text-gray-900">
+                      {dashboardData.length - index}
+                    </td>
                     <td className="px-1 py-1 whitespace-nowrap text-xs text-gray-900">{entry.wip_limit}</td>
                     <td className="px-1 py-1 whitespace-nowrap text-xs text-gray-900">{entry.red_card_cycle_time}</td>
                     <td className="px-1 py-1 whitespace-nowrap text-xs text-gray-900">{entry.flow_efficiency}</td>
@@ -522,6 +524,9 @@ return (
         )}
       </div>
 
+
+
+
       {/* Render flying animations */}
       {flyingAnimations.current.map(anim => anim.startRect && (
         <FlyingCardAnimation
@@ -532,6 +537,60 @@ return (
           onAnimationEnd={handleAnimationEnd}
         />
       ))}
+    
+          {/* Simulation Erklärtext */}
+      <div className="mt-10 p-8 bg-white rounded-xl shadow-lg w-full max-w-5xl text-gray-700">
+        <h2 className="text-2xl font-bold mb-6 text-gray-900 border-b-2 border-red-600 pb-2">
+          Hintergrund: Warum weniger oft mehr ist
+        </h2>
+        
+        <p className="text-lg font-semibold text-gray-800 mb-4 italic">
+          "Weniger parallele Arbeit führt zu kürzeren Durchlaufzeiten."
+        </p>
+
+        <p className="mb-6 leading-relaxed">
+          Die Simulation zeigt: Wenn du das <strong>Work-in-Progress-Limit (WiP)</strong> senkst, 
+          kommen Aufgaben schneller ins Ziel – auch wenn das zunächst unlogisch wirkt.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-gray-50 p-4 rounded-lg border-l-4 order-gray-400">
+            <h3 className="font-bold mb-2">Die Mechanik der Simulation</h3>
+            <p className="text-sm">
+              Jeder Schritt wird per Würfel entschieden. Hohe <strong>Komplexität („K’tät“)</strong> senkt die Wahrscheinlichkeit, dass eine Karte weiterkommt. 
+              Ist ein Schritt komplexer als andere, entsteht dort ein <strong>Flaschenhals</strong> – Arbeit staut sich davor.
+            </p>
+          </div>
+
+          <div className="bg-gray-50 p-4 rounded-lg border-l-4 order-gray-400">
+            <h3 className="font-bold mb-2">Probiere es aus:</h3>
+            <ul className="text-sm space-y-2">
+              <li><strong>Runde 1:</strong> Hohes WiP-Limit (z. B. 5) + hohe K’tät (z. B. 4) in einer Spalte (z.B: Schritt C) → Arbeit staut sich, die rote Karte braucht lange.</li>
+              <li><strong>Runde 2:</strong> Niedriges WiP-Limit (z. B. 1) → die rote Karte kommt deutlich schneller durch.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 className="text-xl font-bold mb-3 text-gray-800">Warum ist das so?</h3>
+        <p className="mb-6">
+          Viele parallele Aufgaben führen zu viel halbfertiger Arbeit. Ja, alle sind mehr ausgelastet, aber alles wird später fertig. 
+          Mit niedrigen WiP-Limits fokussieren wir uns darauf, Wichtiges schnell abzuschließen, 
+          statt vieles gleichzeitig anzufangen. Getreu dem Motto: 
+          <span className="block mt-2 font-mono bg-gray-100 p-2 text-center rounded text-red-700 font-bold">
+            „Stop starting, start finishing.“
+          </span>
+        </p>
+
+
+       <h3 className="text-xl font-bold mb-3 text-gray-800">Und die Produktivität?</h3>
+       <p className="mb-6">
+          Auch wenn nicht alle ständig ausgelastet sind, steigt nicht nur die Durchlaufzeit der Aufgaben, 
+          sondern auch die Produktivität (Durchsatz): Wenn wir nämlich dort helfen, wo der Flaschenhals liegt. 
+          Selbst wenn du nur 10% so effektiv bist wie die Expertin am Flaschenhals – dein zusätzlicher Beitrag 
+          erhöht den Gesamtdurchsatz um genau diese 10%!
+        </p>
+        
+      </div>
     </div>
   );
 };
