@@ -16,7 +16,7 @@ const Board = () => {
   const [dashboardData, setDashboardData] = useState([]);
 
   // Default complexity for "Schritt A/B/C" columns (IDs 1, 3, 5)
-  const [complexity, setComplexity] = useState({ 1: 1, 3: 1, 5: 1 });
+  const [complexity, setComplexity] = useState({ 1: 1, 3: 1, 5: 4 });
   const [wipLimit, setWipLimit] = useState(5);
   const [simSpeed, setSimSpeed] = useState(1.0);
 
@@ -358,7 +358,9 @@ return (
         {/* Global Parameters */}
         <div className="flex items-center gap-6 flex-grow justify-center">
             <div className="flex items-center gap-2">
-              <label className="text-gray-700 text-[10px] font-bold mb-0 leading-none">Gesamt WIP Limit:</label>
+              <label className="block text-gray-700 text-[10px] font-bold mb-0 leading-tight">WIP Limit/<br / >Spalte:
+</label>
+
               <input
                 type="number"
                 value={wipLimit}
@@ -460,11 +462,12 @@ return (
                         if (el) cardRefs.current.set(card.id, el);
                         else cardRefs.current.delete(card.id);
                       }}
-                      style={{
+/*                       style={{
                         visibility: isFlyingClone ? 'hidden' : 'visible',
                         backgroundColor: card.is_red ? '#ca0633' : '#ffffff',
                         width: '90px',
                         height: '30px',
+                        flexShrink: 0,
                         padding: '4px 6px',
                         fontSize: '0.75rem',
                         textAlign: 'center',
@@ -475,7 +478,35 @@ return (
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis'
+                      }} */
+                      style={{
+                        visibility: isFlyingClone ? 'hidden' : 'visible',
+                        backgroundColor: card.is_red ? '#ca0633' : '#ffffff',
+                        
+                        display: 'block', 
+                        width: '90px',
+                        height: '30px',
+                        minHeight: '30px',
+                        maxHeight: '30px',
+                        lineHeight: '22px', 
+                        
+                        // Safari-Fix für "unsichtbare" Karten (Repaint-Trigger)
+                        transform: 'translateZ(0)',
+                        WebkitTransform: 'translateZ(0)', // Für ältere Safari-Versionen
+                        
+                        flexShrink: 0,
+                        padding: '4px 6px',
+                        fontSize: '0.75rem',
+                        textAlign: 'center',
+                        margin: '0 auto 4px auto', // Zentriert die Karte im Block-Container
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        boxSizing: 'border-box'
                       }}
+
+
+
                     />
                   );
                 })}
@@ -565,8 +596,8 @@ return (
           <div className="bg-gray-50 p-4 rounded-lg border-l-4 order-gray-400">
             <h3 className="font-bold mb-2">Probiere es aus:</h3>
             <ul className="text-sm space-y-2">
-              <li><strong>Runde 1:</strong> Hohes WiP-Limit (z. B. 5) + hohe K’tät (z. B. 4) in einer Spalte (z.B: Schritt C) → Arbeit staut sich, die rote Karte braucht lange.</li>
-              <li><strong>Runde 2:</strong> Niedriges WiP-Limit (z. B. 1) → die rote Karte kommt deutlich schneller durch.</li>
+              <li><strong>Runde 1:</strong> Hohes WiP-Limit (z. B. '5/Spalte') + hohe K’tät (z. B. '4' in Schritt C) → Arbeit staut sich, die rote Karte braucht lange.</li>
+              <li><strong>Runde 2:</strong> Niedriges WiP-Limit (z. B. '1/Spalte') → die rote Karte kommt deutlich schneller durch.</li>
             </ul>
           </div>
         </div>
